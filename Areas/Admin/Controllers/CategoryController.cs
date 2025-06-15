@@ -39,7 +39,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 			{
 				_context.Add(category);
                 await _context.SaveChangesAsync();
-                TempData["Success"] = "The category has been added successfully";
+                TempData["Success"] = "Danh mục đã được thêm thành công";
                 return RedirectToAction(nameof(Index));
 			}
 			else
@@ -89,7 +89,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 
 				_context.CourseCategories.Update(existingCategory);
 				await _context.SaveChangesAsync();
-				TempData["Success"] = "The category has been updated successfully";
+				TempData["Success"] = "Đã cập nhật danh mục thành công";
 				return RedirectToAction(nameof(Index));
 			}
 			else
@@ -120,7 +120,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 			}
 			_context.CourseCategories.Remove(category);
 			await _context.SaveChangesAsync();
-			TempData["Success"] = "The category has been deleted successfully";
+			TempData["Success"] = "Danh mục đã được xóa thành công";
 			return RedirectToAction(nameof(Index));
 		}
     }

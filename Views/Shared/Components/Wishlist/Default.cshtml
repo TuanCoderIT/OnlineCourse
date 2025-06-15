@@ -1,0 +1,27 @@
+@model IEnumerable<Wishlist>
+@{
+    ViewBag.Title = "Yêu thích";
+}
+
+@* <link id="style-switch" rel="stylesheet" type="text/css" href="~/assets/css/style.css"> *@
+<link href="~/admin/assets/css/style.css" rel="stylesheet">
+
+<table class="table table-borderless datatable">
+    <thead>
+        <tr>
+            <th class="col-3">Hình ảnh</th>
+            <th class="col-6">Tên Khoá học</th>
+            <th class="col-3">Xoá khỏi DS</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="text-left" scope="row"><img src="@item.Course?.Image" class="img-thumbnail" style="width: 180px; height: 110px;" alt="course image"></td>
+            <td class="text-left" scope="row">@item.Course?.Name</td>
+            <td class="text-left"><a asp-action="RemoveWishlist" asp-controller="Home" asp-route-Id="@item.Id" class="badge bg-danger bg-opacity-10 text-danger">Xoá</a></td>
+        </tr>
+    }
+    </tbody>
+</table>

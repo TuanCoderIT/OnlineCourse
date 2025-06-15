@@ -45,4 +45,7 @@ public partial class Course
     public virtual ICollection<Chapter> Chapters { get; set; } = new List<Chapter>();
 
     public virtual ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
+
 }

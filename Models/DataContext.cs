@@ -32,7 +32,12 @@ public partial class DataContext : IdentityDbContext<AppUserModel>
     public virtual DbSet<Lesson> Lessons { get; set; }
 
     public virtual DbSet<Document> Documents { get; set; }
+
     public virtual DbSet<Progresses> Progresses { get; set; }
+
+    public virtual DbSet<Rating> Ratings { get; set; }
+
+    public virtual DbSet<Wishlist> Wishlists { get; set; }
 
     public virtual DbSet<Chapter> Chapters { get; set; }
 
@@ -208,6 +213,12 @@ public partial class DataContext : IdentityDbContext<AppUserModel>
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Results_Exams");
         });
+
+        // modelBuilder.Entity<Progresses>()
+        //     .HasOne(p => p.Lesson)
+        //     .WithMany(l => l.Progresses)
+        //     .HasForeignKey(p => p.LessonId)
+        //     .OnDelete(DeleteBehavior.Cascade);
 
         OnModelCreatingPartial(modelBuilder);
     }

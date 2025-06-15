@@ -38,7 +38,7 @@ Page content START -->
 	<div class="container">
 
 		<!-- Filter bar START -->
-		<form class="bg-light border p-4 rounded-3 my-4 z-index-9 position-relative">
+		<form class="d-none bg-light border p-4 rounded-3 my-4 z-index-9 position-relative">
 			<div class="row g-3">
 				<!-- Input -->
 				<div class="col-xl-3">
@@ -125,7 +125,8 @@ Page content START -->
 							<div class="card-body pb-0">
 								<div class="d-flex justify-content-between mb-2">
 									<a href="#" class="badge bg-purple bg-opacity-10 text-purple">All level</a>
-									<a href="#" class="h6 fw-light mb-0"><i class="far fa-heart"></i></a>
+									<button class="h6 bg-white border border-0 fw-light mb-0 add-btn-wishlist"
+										name="@item.Id"><i class="far fa-heart"></i></button>
 								</div>
 
 								<h5 class="card-title fw-normal"><a asp-controller="Course" asp-action="Details" asp-route-Id="@item.Id">@item.Name</a></h5>
@@ -159,8 +160,8 @@ Page content START -->
 					<nav class="mt-4 d-flex justify-content-center" aria-label="navigation">
 						<ul class="pagination pagination-primary-soft rounded mb-0">
 							<li class="page-item mb-0"><a class="page-link" href="#" tabindex="-1"><i class="fas fa-angle-double-left"></i></a></li>
-							<li class="page-item mb-0"><a class="page-link" href="#">1</a></li>
-							<li class="page-item mb-0 active"><a class="page-link" href="#">2</a></li>
+							<li class="page-item mb-0 active"><a class="page-link" href="#">1</a></li>
+							<li class="page-item mb-0"><a class="page-link" href="#">2</a></li>
 							<li class="page-item mb-0"><a class="page-link" href="#">..</a></li>
 							<li class="page-item mb-0"><a class="page-link" href="#">6</a></li>
 							<li class="page-item mb-0"><a class="page-link" href="#"><i class="fas fa-angle-double-right"></i></a></li>
@@ -231,3 +232,48 @@ Newsletter START -->
 Newsletter END -->
 
 </main>
+
+@section Scripts {
+	<script>
+		const wishlistBtns = document.querySelectorAll('.add-btn-wishlist');
+		wishlistBtns.forEach(btn => {
+			btn.addEventListener('click', () => {
+				const courseId = btn.getAttribute('name');
+				handleAddWishlist(courseId);
+			});
+		});
+
+		const handleAddWishlist = async (courseId) => {
+			//alert(courseId);
+			try {
+				const response = await fetch(`/Home/AddWishlist?Id=${courseId}`, {
+					method: 'POST',
+				});
+
+				if (response.ok) {
+					const data = await response.json();
+					Swal.fire({
+						icon: 'success',
+						title: 'Khoá học đã được thêm vào yêu thích!',
+						showConfirmButton: false,
+						timer: 1500,
+					});
+				} else {
+					const error = await response.text();
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: error,
+					});
+				}
+			} catch (error) {
+				console.error('Error adding to wishlist:', error);
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'An error occurred. Please try again later.',
+				});
+			}
+		};
+	</script>
+}

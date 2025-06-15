@@ -59,8 +59,8 @@
                                                 <td class="text-left" scope="row">@item.Chapters.Count() <hr>
                                                     <a asp-controller="Chapter" asp-route-courseId="@item.Id">Xem chương</a>
                                                 </td>
-                                                <td class="text-left" scope="row">@item.Lessons.Count() <hr>
-                                                    <a asp-controller="Lesson" asp-route-courseId="@item.Id">Xem bài học</a>
+                                                <td class="text-left" scope="row">@item.Lessons.Count()
+                                                    @* <a asp-controller="Lesson" asp-route-courseId="@item.Id">Xem bài học</a> *@
                                                 </td>
 
                                                 <td class="text-left" scope="row">
@@ -89,3 +89,14 @@
         </p>
     </div>
 </main>
+
+<script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.datatable').DataTable();
+    });
+</script>

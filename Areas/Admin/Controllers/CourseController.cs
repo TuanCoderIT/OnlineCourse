@@ -40,6 +40,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _courseRepository.CreateAsync(course);
+                TempData["Success"] = "Khoá học đã được thêm mới thành công!";
                 return RedirectToAction("Index");
             }
             ViewBag.CategoryId = new SelectList(_courseRepository.GetCategories(), "Id", "Name", course.CategoryId);
@@ -66,6 +67,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 await _courseRepository.EditAsync(course);
+                TempData["Success"] = "Khoá học đã được cập nhật thành công!";
                 return RedirectToAction("Index");
             }
             ViewBag.CategoryId = new SelectList(_courseRepository.GetCategories(), "Id", "Name", course.CategoryId);
@@ -89,6 +91,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _courseRepository.DeleteAsync(id);
+            TempData["Success"] = "Khoá học đã được xóa thành công!";
             return RedirectToAction("Index");
         }
         

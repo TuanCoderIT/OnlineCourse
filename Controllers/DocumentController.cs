@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineCourse.Models;
@@ -13,9 +14,10 @@ namespace OnlineCourse.Controllers
             _context = context;
         }
         
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Documents.OrderBy(d => d.Id).ToListAsync());
+            return View(await _context.Documents.Where(a => a.Status == true).OrderBy(d => d.Id).ToListAsync());
         }
 
 

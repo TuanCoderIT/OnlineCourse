@@ -17,7 +17,6 @@ namespace OnlineCourse.Controllers
             _context = context;
         }
         [HttpGet("api/progress/{courseId}")]
-
         public async Task<IActionResult> GetProgressAsync([FromRoute] int courseId)
         {
             try
@@ -40,6 +39,43 @@ namespace OnlineCourse.Controllers
                         completedLessons = processCount
                     }
                 );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("api/progress/checkLessonComplete/{lessonId}")]
+        public async Task<IActionResult> CheckLessonCompleteAsync([FromRoute] int lessonId)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var process = await _context.Progresses.FirstOrDefaultAsync(p => p.LessonId == lessonId && p.UserId == userId);
+                if (process == null) return Ok(false);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("api/progress/addCompleteLesson/{courseId}/{lessonId}")]
+        public async Task<IActionResult> AddCompleteLessonAsync([FromRoute] int courseId, [FromRoute] int lessonId)
+        {
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var process = await _context.Progresses.FirstOrDefaultAsync(p => p.LessonId == lessonId && p.UserId == userId);
+                if (process != null) return BadRequest("Lesson already completed");
+                var progressModel = new Progresses();
+                progressModel.UserId = userId;
+                progressModel.IsCompleted = true;
+                progressModel.LessonId = lessonId;
+                progressModel.CourseId = courseId;
+                await _context.Progresses.AddAsync(progressModel);
+                await _context.SaveChangesAsync();
+                return Ok(true);
             }
             catch (Exception ex)
             {

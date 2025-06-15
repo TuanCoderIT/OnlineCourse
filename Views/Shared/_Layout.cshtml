@@ -26,6 +26,8 @@
 	<link rel="stylesheet" type="text/css" href="~/assets/vendor/tiny-slider/tiny-slider.css">
 	<link rel="stylesheet" type="text/css" href="~/assets/vendor/glightbox/css/glightbox.css">
 
+	<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css" rel="stylesheet">
+
 	<!-- Theme CSS -->
 	<link id="style-switch" rel="stylesheet" type="text/css" href="~/assets/css/style.css">
 
@@ -69,6 +71,20 @@ Footer END -->
 <script src="~/assets/vendor/tiny-slider/tiny-slider.js"></script>
 <script src="~/assets/vendor/glightbox/js/glightbox.js"></script>
 <script src="~/assets/vendor/purecounterjs/dist/purecounter_vanilla.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+<script>
+	$(function () {
+			var message = '@TempData["Success"]';
+			if (message) {
+				Swal.fire({
+					icon: 'success',
+					title: 'Success',
+					text: message
+				});
+			}
+		});
+</script>
 
 <!-- Template Functions -->
 <script src="~/assets/js/functions.js"></script>

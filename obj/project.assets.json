@@ -4593,24 +4593,26 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\huynh\\.nuget\\packages\\": {}
+    "C:\\Users\\Tuan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\huynh\\Desktop\\OnlineCourse\\OnlineCourse.csproj",
+      "projectUniqueName": "D:\\Project\\OnlineCourse\\OnlineCourse.csproj",
       "projectName": "OnlineCourse",
-      "projectPath": "C:\\Users\\huynh\\Desktop\\OnlineCourse\\OnlineCourse.csproj",
-      "packagesPath": "C:\\Users\\huynh\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\huynh\\Desktop\\OnlineCourse\\obj\\",
+      "projectPath": "D:\\Project\\OnlineCourse\\OnlineCourse.csproj",
+      "packagesPath": "C:\\Users\\Tuan\\.nuget\\packages\\",
+      "outputPath": "D:\\Project\\OnlineCourse\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\huynh\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Tuan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4628,8 +4630,7 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -4687,7 +4688,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

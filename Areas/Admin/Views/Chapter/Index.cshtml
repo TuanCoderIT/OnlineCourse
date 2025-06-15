@@ -8,7 +8,7 @@
         <h2>Danh sách chương</h2>
 
         <p>
-            <a asp-area="Admin" asp-controller="Course" asp-action="Index" type="button" class="btn btn-success">
+            <a href="javascript:history.back()" type="button" class="btn btn-success">
             <i class="bi bi-file-earmark-text me-1"></i>Trở về Khoá học</a>
             <section class="section dashboard">
                 <div class="row">
@@ -22,7 +22,7 @@
                                             <th class="col-3">Tên chương</th>
                                             <th class="col-1">ID khoá học</th>
                                             <th class="col-1">Vị trí</th>
-                                            <th class="col-2">Số bài học</th>
+                                            <th class="col-2">Bài học</th>
                                             <th class="col-1">Trạng thái</th>
                                             <th class="col-2">Thêm bài học</th>
                                             <th class="col-1">Action</th>
@@ -37,7 +37,7 @@
                                                 <td class="text-left" scope="row">@item.CourseId</td>
                                                 <td class="text-left" scope="row">@item.Order</td>
                                                 <td class="text-left" scope="row">
-                                                    @item.Lessons.Count()
+                                                    
                                                     | <a asp-controller="Lesson" asp-route-chapterId="@item.ChapterId">Xem bài học</a>
                                                 </td>
                                                 <td class="text-left" scope="row">
@@ -49,7 +49,7 @@
                                                     </a>
                                                 </td>
                                                 <td class="text-left" scope="row">
-                                                    <a asp-area="Admin" asp-controller="Chapter" asp-action="Edit" asp-route-id="@item.ChapterId" class="btn btn-primary btn-sm" title="Edit this chapter">
+                                                    <a asp-area="Admin" asp-controller="Chapter" asp-action="Edit" asp-route-id="@item.ChapterId" class="btn btn-warning btn-sm" title="Edit this chapter">
                                                         <i class="bi bi-pencil"></i>
                                                     </a>
                                                     <a asp-area="Admin" asp-controller="Chapter" asp-action="Delete" asp-route-id="@item.ChapterId" class="btn btn-danger btn-sm" title="Delete this chapter">

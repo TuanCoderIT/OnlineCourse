@@ -1,3 +1,4 @@
+@using System.Security.Claims
 @model Course
 @{
 	ViewBag.Title = @Model.Name;
@@ -12,8 +13,7 @@ Page banner video START -->
 				<!-- Course video START -->
 				<div class="col-12">
 					<div class="video-player mt-2">
-						<iframe class="rounded-3" id="lessonVideo" width="1280" height="720"
-							src="https://www.youtube.com/embed/" poster="@Model.Image" frameborder="0"
+						<iframe class="rounded-3" id="lessonVideo" width="1280" height="720" frameborder="0"
 							allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
 							allowfullscreen>
 						</iframe>
@@ -77,7 +77,7 @@ Page content START -->
 								<div class="d-flex align-items-center">
 									<!-- Avatar image -->
 									<div class="avatar avatar-lg">
-										<img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg"
+										<img class="avatar-img rounded-circle" src="~/assets/images/avatar/05.jpg"
 											alt="avatar">
 									</div>
 									<div class="ms-3">
@@ -157,13 +157,13 @@ Page content START -->
 									aria-labelledby="course-pills-tab-2">
 									<!-- Review START -->
 									<div class="row mb-4">
-										<h5 class="mb-4">Our Student Reviews</h5>
+										<h5 class="mb-4">Tất cả Đánh giá của học viên</h5>
 
 										<!-- Rating info -->
 										<div class="col-md-4 mb-3 mb-md-0">
 											<div class="text-center">
 												<!-- Info -->
-												<h2 class="mb-0">4.5</h2>
+												<h2 class="mb-0">@ViewBag.AverageRate</h2>
 												<!-- Star -->
 												<ul class="list-inline mb-0">
 													<li class="list-inline-item me-0"><i
@@ -177,12 +177,12 @@ Page content START -->
 													<li class="list-inline-item me-0"><i
 															class="fas fa-star-half-alt text-warning"></i></li>
 												</ul>
-												<p class="mb-0">(Based on todays review)</p>
+												<p class="mb-0">(Đánh giá trung bình)</p>
 											</div>
 										</div>
 
 										<!-- Progress-bar and star -->
-										<div class="col-md-8">
+										@* <div class="col-md-8">
 											<div class="row align-items-center text-center">
 												<!-- Progress bar and Rating -->
 												<div class="col-6 col-sm-8">
@@ -319,6 +319,41 @@ Page content START -->
 													</ul>
 												</div>
 											</div>
+										</div> *@
+
+										<div class="col-md-8">
+											<div class="row align-items-center text-center">
+												@for (int star = 5; star >= 1; star--)
+												{
+													var percentage = ViewBag.StarPercentage[star];
+													var count = ViewBag.StarStats[star];
+												<div class="col-6 col-sm-8">
+													<div class="progress progress-sm bg-warning bg-opacity-15">
+														<div class="progress-bar bg-warning" role="progressbar"
+															style="width: @percentage%" aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+														</div>
+													</div>
+												</div>
+
+												<div class="col-6 col-sm-4">
+													
+													<ul class="list-inline mb-0">
+														@for (int i = 1; i <= 5; i++)
+														{
+															if (i <= star)
+															{
+																<li class="list-inline-item me-0 small"><i class="fas fa-star text-warning"></i></li>
+															}
+															else
+															{
+																<li class="list-inline-item me-0 small"><i class="far fa-star text-warning"></i></li>
+															}
+														}
+													</ul>
+													<p class="small text-muted mb-0">@count đánh giá</p>
+												</div>
+												}
+											</div>
 										</div>
 									</div>
 									<!-- Review END -->
@@ -326,83 +361,84 @@ Page content START -->
 									<!-- Student review START -->
 									<div class="row">
 										<!-- Review item START -->
-										<div class="d-md-flex my-4">
-											<!-- Avatar -->
-											<div class="avatar avatar-xl me-4 flex-shrink-0">
-												<img class="avatar-img rounded-circle" src="assets/images/avatar/09.jpg"
-													alt="avatar">
-											</div>
-											<!-- Text -->
-											<div>
-												<div class="d-sm-flex mt-1 mt-md-0 align-items-center">
-													<h5 class="me-3 mb-0">Jacqueline Miller</h5>
-													<!-- Review star -->
-													<ul class="list-inline mb-0">
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="far fa-star text-warning"></i></li>
-													</ul>
+									@if (Model.Ratings != null && Model.Ratings.Any())
+									{	
+										@foreach(var review in Model.Ratings)
+										{
+											<div id="review-@review.Id comments-section" class="review-item d-md-flex my-4">
+												<div class="avatar avatar-xl me-4 flex-shrink-0">
+													<img class="avatar-img rounded-circle" src="~/assets/images/avatar/09.jpg" alt="avatar">
 												</div>
-												<!-- Info -->
-												<p class="small mb-2">2 days ago</p>
-												<p class="mb-2">Perceived end knowledge certainly day sweetness why
-													cordially. Ask a quick six seven offer see among. Handsome met
-													debating sir dwelling age material. As style lived he worse dried.
-													Offered related so visitors we private removed. Moderate do subjects
-													to distance. </p>
+												<div>
+													<div class="d-sm-flex mt-1 mt-md-0 align-items-center">
+														<h5 class="me-3 mb-0">@review.User?.UserName</h5>
+														<ul class="list-inline mb-0">
+															@for (int i = 1; i <= 5; i++)
+															{
+																if (i <= review.Rate)
+																{
+																	<li class="list-inline-item me-0"><i class="fas fa-star text-warning"></i></li>
+																}
+																else
+																{
+																	<li class="list-inline-item me-0"><i class="far fa-star text-warning"></i></li>
+																}
+															}
+														</ul>
+													</div>
+													@* <p class="small mb-2">@review.CreatedAt</p> *@
+													<p>
+														<small>Added: @review.CreatedAt.ToString("MMM dd, yyyy hh:mm tt")</small>
+														@if (review.CreatedAt != review.UpdatedAt)
+														{
+															<small>(Updated: @review.UpdatedAt.ToString("MMM dd, yyyy hh:mm tt"))</small>
+														}
+													</p>
+													<p class="mb-2">@review.Comment</p>
+													<a href="#" class="text-body mb-0"><i class="fas fa-reply me-2"></i>Trả lời</a>
 
-												<!-- Reply button -->
-												<a href="#" class="text-body mb-0"><i
-														class="fas fa-reply me-2"></i>Reply</a>
+													<form id="edit-form-@review.Id" asp-action="EditRating" method="post" style="display:none;" class="mt-3">
+														<input type="hidden" name="id" value="@review.Id" />
+														<div class="mb-2">
+															<textarea name="comment" cols="50" rows="2" class="form-control">@review.Comment</textarea>
+														</div>
+														<div class="mb-2">
+															<select name="rate" class="form-select">
+																@for (int i = 1; i <= 5; i++)
+																{
+																	if (i == review.Rate)
+																	{
+																		<option value="@i" selected>★★★★★ (@i/5)</option>
+																	}
+																	else
+																	{
+																		<option value="@i">★★★★★ (@i/5)</option>
+																	}
+																}
+															</select>
+														</div>
+														<button type="submit" class="btn btn-primary">Lưu</button>
+														<button type="button" class="btn btn-secondary" onclick="toggleEditForm(@review.Id)">Hủy</button>
+													</form>
+													</div>	
 											</div>
-										</div>
+													<div class="d-flex justify-content-end">
+														@if (review.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+														{
+															<button class="btn btn-link text-primary" onclick="toggleEditForm(@review.Id)">Sửa</button>
+															<button class="btn btn-link text-danger" onclick="deleteRating(@review.Id, event)">Xoá</button>
+														}
+													</div>
+										}
+									}
+									else
+									{
+										<p>Chưa có đánh giá nào!</p>
+									}
 										<!-- Divider -->
 										<hr>
 										<!-- Review item END -->
 
-										<!-- Review item START -->
-										<div class="d-md-flex my-4">
-											<!-- Avatar -->
-											<div class="avatar avatar-xl me-4 flex-shrink-0">
-												<img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg"
-													alt="avatar">
-											</div>
-											<!-- Text -->
-											<div>
-												<div class="d-sm-flex mt-1 mt-md-0 align-items-center">
-													<h5 class="me-3 mb-0">Dennis Barrett</h5>
-													<!-- Review star -->
-													<ul class="list-inline mb-0">
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="fas fa-star text-warning"></i></li>
-														<li class="list-inline-item me-0"><i
-																class="far fa-star text-warning"></i></li>
-													</ul>
-												</div>
-												<!-- Info -->
-												<p class="small mb-2">2 days ago</p>
-												<p class="mb-2">Handsome met debating sir dwelling age material. As
-													style lived he worse dried. Offered related so visitors we private
-													removed. Moderate do subjects to distance. </p>
-												<!-- Reply button -->
-												<a href="#" class="text-body mb-0"><i
-														class="fas fa-reply me-2"></i>Reply</a>
-											</div>
-										</div>
-										<!-- Review item END -->
 										<!-- Divider -->
 										<hr>
 									</div>
@@ -410,41 +446,32 @@ Page content START -->
 
 									<!-- Leave Review START -->
 									<div class="mt-2">
-										<h5 class="mb-4">Leave a Review</h5>
-										<form class="row g-3">
-											<!-- Name -->
-											<div class="col-md-6">
-												<input type="text" class="form-control" id="inputtext"
-													placeholder="Name" aria-label="First name">
-											</div>
-											<!-- Email -->
-											<div class="col-md-6">
-												<input type="email" class="form-control" placeholder="Email"
-													id="inputEmail4">
-											</div>
+										<h5 class="mb-4">Hãy viết đánh giá của bạn!</h5>
+										<form asp-action="AddRating" asp-controller="Course" method="post" class="row g-3">
+											<input type="hidden" name="courseId" value="@Model.Id" />
 											<!-- Rating -->
 											<div class="col-12">
-												<select id="inputState2" class="form-select  js-choice">
-													<option selected="">★★★★★ (5/5)</option>
-													<option>★★★★☆ (4/5)</option>
-													<option>★★★☆☆ (3/5)</option>
-													<option>★★☆☆☆ (2/5)</option>
-													<option>★☆☆☆☆ (1/5)</option>
+												<select name="rate" id="inputState2" class="form-select  js-choice">
+													<option selected value="">-- Chọn đánh giá --</option>
+													<option value="5">★★★★★ (5/5)</option>
+													<option value="4">★★★★☆ (4/5)</option>
+													<option value="3">★★★☆☆ (3/5)</option>
+													<option value="2">★★☆☆☆ (2/5)</option>
+													<option value="1">★☆☆☆☆ (1/5)</option>
 												</select>
 											</div>
 											<!-- Message -->
 											<div class="col-12">
-												<textarea class="form-control" id="exampleFormControlTextarea1"
-													placeholder="Your review" rows="3"></textarea>
+												<textarea name="comment" class="form-control" id="exampleFormControlTextarea1"
+													placeholder="Bình luận ở đây..." rows="3"></textarea>
 											</div>
 											<!-- Button -->
 											<div class="col-12">
-												<button type="submit" class="btn btn-primary mb-0">Post Review</button>
+												<button type="submit" class="btn btn-primary mb-0">Đăng tải</button>
 											</div>
 										</form>
 									</div>
 									<!-- Leave Review END -->
-
 								</div>
 								<!-- Content END -->
 
@@ -492,7 +519,7 @@ Page content START -->
 															aria-controls="collapse-@chapter.ChapterId">
 															<span class="mb-0">@chapter.Name</span>
 															<span class="small d-block mt-1">(@chapter.Lessons.Count()
-																Lectures)</span>
+																bài học)</span>
 														</a>
 													</h6>
 													<div id="collapse-@chapter.ChapterId"
@@ -501,36 +528,20 @@ Page content START -->
 														data-bs-parent="#accordionExample2">
 														<div class="accordion-body mt-3">
 															<div class="vstack gap-3">
-																<div class="overflow-hidden">
-																	@* <div class="d-flex justify-content-between">
-																	<p class="mb-1 h6">1/3 Completed (tiến độ)</p>
-																	<h6 class="mb-1 text-end">30%</h6>
-																</div> *@
-																	<div
-																		class="progress progress-sm bg-primary bg-opacity-10">
-																		<div class="progress-bar bg-primary aos"
-																			role="progressbar" data-aos="slide-right"
-																			data-aos-delay="200" data-aos-duration="1000"
-																			data-aos-easing="ease-in-out" style="width: 30%"
-																			aria-valuenow="30" aria-valuemin="0"
-																			aria-valuemax="100">
-																		</div>
-																	</div>
-																</div>
-																<p>Số lượng bài học: @chapter.Lessons.Count()</p>
+																
+																@* <p>Số lượng bài học: @chapter.Lessons.Count()</p> *@
 																@if (chapter.Lessons.Any())
 																{
 																	@foreach (var lesson in chapter.Lessons.OrderBy(l =>
 																												l.Order))
 																	{
-																		<div
-																			class="d-flex justify-content-between align-items-center">
+																		<div class="d-flex justify-content-between align-items-center"
+																			name=@lesson.VideoUrl
+																			onclick="playLessonVideo('@lesson.VideoUrl', @lesson.LessonId)">
 																			<div
 																				class="position-relative d-flex align-items-center">
 																				<a href="javascript:void(0);"
-																					class="btn btn-danger-soft btn-round href_url_video btn-sm mb-0 stretched-link position-static"
-																					name=@lesson.VideoUrl
-																					onclick="playLessonVideo('@lesson.VideoUrl')">
+																					class="btn btn-danger-soft btn-round href_url_video btn-sm mb-0 stretched-link position-static">
 																					<i class="fas fa-play me-0"></i>
 																				</a>
 																				<span
@@ -608,11 +619,42 @@ Page content END -->
 </main>
 
 @section Scripts {
+	<script src="~/assets/js/processhandle.js"></script>
 	<script>
-		function playLessonVideo(videoUrl) {
-			const videoPlayer = document.getElementById('lessonVideo');
-			videoPlayer.setAttribute('src', videoUrl);
+		function toggleEditForm(id) {
+			const form = document.getElementById(`edit-form-${id}`);
+			if (form.style.display === "none") {
+				form.style.display = "block";
+			} else {
+				form.style.display = "none";
+			}
+		}
+	
+		async function deleteRating(id, event) {
+			if (event) {
+				event.preventDefault();
+			}
+
+			if (confirm("Bạn có chắc chắn muốn xoá đánh giá này không?")) {
+				const response = await fetch(`/Course/DeleteRating/${id}`, {
+					method: "DELETE",
+					headers: {
+						"RequestVerificationToken": document.querySelector('input[name="__RequestVerificationToken"]').value,
+					},
+				});
+
+				if (response.ok) {
+					// Nếu xoá thành công, xoá phần tử HTML tương ứng
+					const reviewElement = document.querySelector(`#review-${id}`);
+					if (reviewElement) {
+						reviewElement.remove();
+					}
+					alert("Đánh giá đã được xoá!");
+				} else {
+					alert("Có lỗi xảy ra khi xoá đánh giá!");
+				}
+			}
 		}
 	</script>
-	<script src="~/assets/js/processhandle.js"></script>
+
 }

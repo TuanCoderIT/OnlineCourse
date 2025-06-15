@@ -104,6 +104,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 
                     _context.Add(lesson);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Bài học đã được tạo thành công.";
 
                     return RedirectToAction("Index", new { chapterId = lesson.ChapterId });
                 }
@@ -166,7 +167,6 @@ namespace OnlineCourse.Areas.Admin.Controllers
                     existingLesson.Name = lesson.Name;
                     existingLesson.Details = lesson.Details;
                     existingLesson.ContentType = lesson.ContentType;
-                    // Kiểm tra trùng lặp Order
                     var isDuplicateOrder = _context.Lessons
                         .Any(l => l.ChapterId == lesson.ChapterId && l.Order == lesson.Order && l.LessonId != id);
                     
@@ -182,6 +182,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
                     existingLesson.Duration = lesson.Duration;
 
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Bài học đã được cập nhật thành công.";
                     return RedirectToAction("Index", new { chapterId = lesson.ChapterId });
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -230,8 +231,13 @@ namespace OnlineCourse.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            
+            var progresses = _context.Progresses.Where(p => p.LessonId == id);
+            _context.Progresses.RemoveRange(progresses);
+
             _context.Lessons.Remove(lesson);
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Bài học đã được xóa thành công.";
             return RedirectToAction("Index", new { chapterId = lesson.ChapterId });
         }
         #endregion Delete

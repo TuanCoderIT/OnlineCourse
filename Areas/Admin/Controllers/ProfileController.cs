@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineCourse.Models;
@@ -7,6 +8,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/Profile")]
+    [Authorize(Roles = "Admin")]
     public class ProfileController : Controller
     {
         private readonly DataContext _context;

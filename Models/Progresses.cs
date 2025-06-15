@@ -15,5 +15,6 @@ namespace OnlineCourse.Models
         public string? UserId { get; set; }
         public int? CourseId { get; set; }
         public bool? IsCompleted { get; set; }
+        public Lesson? Lesson { get; set; }
     }
 }

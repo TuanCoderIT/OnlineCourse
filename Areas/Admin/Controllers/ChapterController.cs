@@ -27,12 +27,10 @@ namespace OnlineCourse.Areas.Admin.Controllers
         [Route("Index")]
         public async Task<IActionResult> Index(int? courseId)
         {
-            // Nếu courseId không có, lấy tất cả chương 
             if (courseId == null)
             {
                 return View(await _context.Chapters.ToListAsync());
             }
-            // Nếu có courseId, chỉ lấy các chương thuộc khóa học đó
             var chapters = await _context.Chapters
                 .Where(l => l.CourseId == courseId)
                 .OrderBy(l => l.Order)
@@ -74,17 +72,16 @@ namespace OnlineCourse.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Tìm chương cuối cùng trong cùng khóa học
                     var lastChapter = _context.Chapters
-                        .Where(c => c.CourseId == chapter.CourseId) // Lọc theo CourseId
-                        .OrderByDescending(c => c.Order) // Sắp xếp giảm dần theo Order
+                        .Where(c => c.CourseId == chapter.CourseId)
+                        .OrderByDescending(c => c.Order)
                         .FirstOrDefault();
 
-                    // Gán Order tăng dần
                     chapter.Order = lastChapter != null ? lastChapter.Order + 1 : 1;
 
                     _context.Add(chapter);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Đã thêm chương mới thành công.";
 
                     return RedirectToAction("Index", new { chapter.CourseId });
                 }
@@ -135,7 +132,6 @@ namespace OnlineCourse.Areas.Admin.Controllers
             {
                 try
                 {
-                    // Kiểm tra trùng lặp Order
                     var isDuplicateOrder = _context.Chapters
                         .Any(c => c.CourseId == chapter.CourseId && c.Order == chapter.Order && c.ChapterId != id);
 
@@ -151,6 +147,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
 
                     _context.Update(existChapter);
                     await _context.SaveChangesAsync();
+                    TempData["Success"] = "Đã cập nhật chương thành công.";
                     return RedirectToAction("Index", new { existChapter.CourseId });
                 }
                 catch (DbUpdateConcurrencyException ex)
@@ -193,6 +190,7 @@ namespace OnlineCourse.Areas.Admin.Controllers
             var courseId = delChapter.CourseId;
             _context.Chapters.Remove(delChapter);
             await _context.SaveChangesAsync();
+            TempData["Success"] = "Đã xóa chương thành công.";
             return RedirectToAction("Index", new { courseId });
         }
         #endregion Delete

@@ -58,25 +58,19 @@
 						<a class="nav-link" asp-controller="Document" asp-action="Index" id="pagesMenu">Tài liệu</a>
 					</li>
 
+					<!-- Nav item 5 Document -->
+                    <li class="nav-item dropdown">
+						<a class="nav-link" asp-controller="Home" asp-action="Wishlist" id="pagesMenu">Yêu thích</a>
+					</li>
+
                     <!-- Nav item 6 Account -->
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="accounntMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Tài khoản</a>
 						<ul class="dropdown-menu" aria-labelledby="accounntMenu">
-							<!-- Dropdown submenu -->
-							<li class="dropdown-submenu dropend">
-								<a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-user-tie fa-fw me-1"></i>Instructor</a>
-							</li>
-
-							<!-- Dropdown submenu -->
-							<li class="dropdown-submenu dropend">
-								<a class="dropdown-item dropdown-toggle" href="#"><i class="fas fa-user-graduate fa-fw me-1"></i>Student</a>
-							</li>
-							
 							<li> <a class="dropdown-item" asp-area="Admin" asp-controller="Home"><i class="fas fa-user-cog fa-fw me-1"></i>Admin</a> </li>
 							<li> <hr class="dropdown-divider"></li>
 							<li> <a class="dropdown-item" href="instructor-edit-profile.html"><i class="fas fa-fw fa-edit me-1"></i>Edit Profile</a> </li>
 							<li> <a class="dropdown-item" href="instructor-setting.html"><i class="fas fa-fw fa-cog me-1"></i>Settings</a> </li>
-							<li> <a class="dropdown-item" href="instructor-delete-account.html"><i class="fas fa-fw fa-trash-alt me-1"></i>Delete Profile</a> </li>
 						</ul>
 					</li>
 					
@@ -86,7 +80,7 @@
 				<!-- Nav Search START -->
 				<div class="nav my-3 my-xl-0 px-4 flex-nowrap align-items-center">
 					<div class="nav-item w-100">
-						<form class="position-relative">
+						<form asp-action="Search" asp-controller="Course" method="post" class="position-relative">
 							<input class="form-control pe-5 bg-transparent" type="search" placeholder="Search" aria-label="Search">
 							<button class="btn bg-transparent px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i class="fas fa-search fs-6 "></i></button>
 						</form>
@@ -115,7 +109,7 @@
                             </div>
                             <hr>
                         </li>
-                        <li><a class="dropdown-item" asp-controller="Profile" asp-action="Index"><i class="bi bi-person fa-fw me-2"></i>My Profile</a></li>
+                        <li><a class="dropdown-item" asp-controller="Home" asp-action="Profile"><i class="bi bi-person fa-fw me-2"></i>My Profile</a></li>
                         <li><a class="dropdown-item" href="#"><i class="bi bi-gear fa-fw me-2"></i>Account Settings</a></li>
                         @Html.AntiForgeryToken()
                         <li><a class="dropdown-item bg-danger-soft-hover" asp-action="Logout" asp-controller="Account"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>

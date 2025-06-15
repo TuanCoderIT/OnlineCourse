@@ -2,7 +2,61 @@ const progressTitle = document.querySelector(".progress_title");
 const progressElement = document.querySelector(".progress-bar-main");
 const path = window.location.pathname;
 console.log(progressElement);
+///////////////////////////
+async function playLessonVideo(videoUrl, lessonId) {
+  const videoPlayer = document.getElementById("lessonVideo");
+  videoPlayer.setAttribute("src", videoUrl);
+  const res = await CheckLessonComplete(lessonId);
 
+  if (res == false) {
+    const res = await UpdateLessonProgress(lessonId);
+    if (res == true) {
+      handleProgress(handleGetCourseId());
+    }
+  }
+}
+const UpdateLessonProgress = async (lessonId) => {
+  console.log("courseId2", lessonId);
+  const courseId = handleGetCourseId();
+
+  if (courseId && lessonId) {
+    try {
+      const response = await fetch(
+        `http://localhost:5149/api/progress/addCompleteLesson/${courseId}/${lessonId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const data = await response.json();
+      console.log("check", data);
+      return data;
+    } catch (error) {
+      console.error("Error fetching data:", error); // Bắt lỗi và in ra nếu có
+    }
+  }
+  return null;
+};
+const CheckLessonComplete = async (lessonId) => {
+  try {
+    // Gọi API sử dụng fetch
+    const response = await fetch(
+      `http://localhost:5149/api/progress/checkLessonComplete/${lessonId}`
+    );
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error); // Bắt lỗi và in ra nếu có
+  }
+};
 //////////////////////////
 const handleGetCourseId = () => {
   // Dùng biểu thức chính quy để tìm ID khóa học
@@ -70,10 +124,6 @@ function getYouTubeId(url) {
   const match = url.match(regExp);
   return match ? match[1] : null; // Trả về ID hoặc null nếu không tìm thấy
 }
-
-// Ví dụ
-console.log(getYouTubeId("https://www.youtube.com/watch?v=dQw4w9WgXcQ")); // dQw4w9WgXcQ
-console.log(getYouTubeId("https://youtu.be/dQw4w9WgXcQ")); // dQw4w9WgXcQ
 
 const videoViewer = document.getElementById("lessonVideo");
 handleInnerVideoLink = (link) => {

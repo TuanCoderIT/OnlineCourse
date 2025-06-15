@@ -1,0 +1,77 @@
+@model IEnumerable<Wishlist>
+@{
+    ViewBag.Title = "Yêu thích";
+}
+
+<link id="style-switch" rel="stylesheet" type="text/css" href="~/assets/css/style.css">
+
+<main>
+
+<!-- =======================
+Page Banner START -->
+<section class="py-0">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="bg-light p-4 text-center rounded-3">
+					<h1 class="m-0">Khoá học yêu thích của tôi</h1>
+					<!-- Breadcrumb -->
+					<div class="d-flex justify-content-center">
+						<nav aria-label="breadcrumb">
+							<ol class="breadcrumb breadcrumb-dots mb-0">
+								<li class="breadcrumb-item"><a href="/">Home</a></li>
+								<li class="breadcrumb-item"><a asp-action="AllCourses">Courses</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+							</ol>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- =======================
+Page Banner END -->
+
+<!-- =======================
+Page content START -->
+<section class="pt-5">
+	<div class="container">
+		<!-- Content and button -->
+		<div class="d-sm-flex justify-content-sm-between align-items-center mb-5">
+			<h5 class="mb-4 mb-sm-0">Bạn có @Model.Count() Khoá học trong danh sách yêu thích ❤️</h5>
+			@* <div class="text-end"> <button class="btn btn-danger-soft mb-0"><i class="fas fa-trash me-2"></i>Remove all</button> </div> *@
+		</div>
+		<div class="row g-4">
+			<!-- Card item START -->
+			@foreach (var item in Model)
+            {
+                <div class="col-sm-6 col-lg-4 col-xl-4">
+				<div class="card shadow">
+					<img src="@item.Course?.Image" class="card-img-top" alt="course image">
+					<div class="card-body pb-0">
+						<div class="d-flex justify-content-between mb-2">
+							<a asp-action="RemoveWishlist" asp-controller="Home" asp-route-Id="@item.Id" class="badge bg-danger bg-opacity-10 text-danger">Xoá</a>
+							<a class="text-danger"><i class="fas fa-heart"></i></a>
+						</div>
+						<h5 class="card-title fw-normal"><a asp-action="Details">@item.Course?.Name</a></h5>
+						<p class="mb-2 text-truncate-2">@item.Course?.Description</p>
+						
+					</div>
+					<div class="card-footer pt-0 pb-3">
+						<hr>
+						<div class="d-flex justify-content-between ">
+							<span class="h6 fw-light mb-0"><i class="far fa-clock text-danger me-2"></i></span>
+							<span class="h6 fw-light mb-0"><i class="fas fa-table text-orange me-2"></i></span>
+						</div>
+					</div>
+				</div>
+			</div>
+            }
+		</div>
+	</div>
+</section>
+<!-- =======================
+Page content END -->
+
+</main>
